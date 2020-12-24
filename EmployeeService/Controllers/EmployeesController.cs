@@ -18,14 +18,51 @@ namespace EmployeeService.Controllers
             }
         }
 
-
-
-        public Employee Get(int id)
+        public HttpResponseMessage Get(int id)
         {
             using (EmployeeDBEntities entities = new EmployeeDBEntities())
             {
-                return entities.Employees.FirstOrDefault(e => e.ID == id);
+                var entity = entities.Employees.FirstOrDefault(e => e.ID == id);
+
+                if(entity != null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, entity);
+                }
+
+                else
+                {
+                    //This will return 404 Not found
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, 
+                        "Employee with Id = " + id.ToString() + " not found");
+                }
             }
+        }
+
+        public HttpResponseMessage Post ([FromBody]Employee employee)
+        {
+            try
+            {
+                using (EmployeeDBEntities entities = new EmployeeDBEntities())
+                {
+                    entities.Employees.Add(employee);
+                    entities.SaveChanges();
+
+                    var message = Request.CreateResponse(HttpStatusCode.Created, employee);
+
+                    //URI location of the newly created item including its id
+                    message.Headers.Location = new Uri(Request.RequestUri + employee.ID.ToString());
+
+                    return message;
+                }
+
+            }
+
+            catch(Exception ex)
+            {
+               return  Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+
+            }
+           
         }
     }
 }

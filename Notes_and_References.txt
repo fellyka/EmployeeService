@@ -1,0 +1,47 @@
+Asp net Web Api
+---------------
+* MediaTypeFormatter:
+  http://www.tugberkugurlu.com/archive/creating-custom-csvmediatypeformatter-in-
+         asp-net-web-api-for-comma-separated-values-csv-format
+
+
+* Status Code:
+  204 is return when the return type of a method is a void as in:
+
+       public void Post ([FromBody]Employee employee)
+        {
+            using (EmployeeDBEntities entities = new EmployeeDBEntities())
+            {
+                entities.Employees.Add(employee);
+                entities.SaveChanges();
+            }
+        }//end of Post method with a 204 No Content HttpStatus Code
+   204 returns No Content even if there is contents. According to REST requirements, A method that has got
+   items should return 201 Created.
+   An hypothetical solution would be to write the Post method as follows:
+       
+        public HttpResponseMessage Post ([FromBody]Employee employee)
+        {
+            try
+            {
+                using (EmployeeDBEntities entities = new EmployeeDBEntities())
+                {
+                    entities.Employees.Add(employee);
+                    entities.SaveChanges();
+
+                    var message = Request.CreateResponse(HttpStatusCode.Created, employee);
+                    //URI location of the newly created item including its id
+                    message.Headers.Location = new Uri(Request.RequestUri + employee.ID.ToString());
+
+                    return message;
+                }
+
+            }
+
+            catch(Exception ex)
+            {
+               return  Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex);
+
+            }
+           
+        }//end of enhanced Post method returning 201 HttpStatusCode

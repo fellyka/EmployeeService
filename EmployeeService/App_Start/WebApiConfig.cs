@@ -18,7 +18,20 @@ namespace EmployeeService
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
-            );
+                );
+            
+
+            //MediaTypeFormatter
+
+            /* This will remove the Xml format and render data in Json irrespective of the header value
+               To return the xml, the code would be:
+            config.Formatters.Remove(config.Formatters.JsonFormatter); this regardless of the header value
+            Accept: application/json -- The result will be in Xml
+            ---------------------------------------------------------------------------------------------------
+             
+            config.Formatters.Remove(config.Formatters.XmlFormatter); 
+            */
+            
         }
     }
 }
