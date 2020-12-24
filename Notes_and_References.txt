@@ -1,3 +1,6 @@
+Side notes
+
+
 Asp net Web Api
 ---------------
 * MediaTypeFormatter:
@@ -45,3 +48,5 @@ Asp net Web Api
             }
            
         }//end of enhanced Post method returning 201 HttpStatusCode
+
+   
