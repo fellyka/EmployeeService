@@ -7,6 +7,7 @@ Asp net Web Api
   http://www.tugberkugurlu.com/archive/creating-custom-csvmediatypeformatter-in-
          asp-net-web-api-for-comma-separated-values-csv-format
 
+-------------------------------------------------------------------------------------------------------------------------
 
 * Status Code:
   204 is return when the return type of a method is a void as in:
@@ -49,4 +50,20 @@ Asp net Web Api
            
         }//end of enhanced Post method returning 201 HttpStatusCode
 
+--------------------------------------------------------------------------------------------------------------------------
+
+*Web API default convention for binding parameters using FromBody and FromUri attributes:
+
+ => These attributes tell the Web API where to look in the request for the parameter values
+
+  # If the parameter is a simple type like int, bool, double, etc, Web API tries to get the value from the URI(Either from route data or QueryString).
+  # If the parameter is a complex type like Customer, Employee, Student, etc, Web API tries to get the value from the request body.
+  #Note:
+        #To change the default parameter binding process, use [FromBody] and [FromUri] attributes:
+           public HttpResponseMessage Put([FromBody] int id, [FromUri]Employee employee)
+            #Use [FromBody] attribute to force Web API to get simple types from the request body
+            #Use [FromUri] attribute to force Web API to get complex type data from the URI (i.e Routedata or QueryString)
+
+
+---------------------------------------------------------------------------------------------------------------------------
    
